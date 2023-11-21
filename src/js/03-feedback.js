@@ -1,4 +1,5 @@
 import throttle from 'lodash.throttle';
+import simpleLightbox from 'simplelightbox';
 
 const form = document.querySelector('.feedback-form');
 const user = {
@@ -23,6 +24,7 @@ form.addEventListener('submit', handleSubmit);
 
 function handleInput() {
   const { email, message } = form.elements;
+
   user.email = email.value;
   user.message = message.value;
   localStorage.setItem('feedback-form-state', JSON.stringify(user));
@@ -30,7 +32,14 @@ function handleInput() {
 
 function handleSubmit(event) {
   event.preventDefault();
-  localStorage.clear();
-  form.reset();
-  console.log(user);
+
+  const { email, message } = form.elements;
+  if (email.value === '' || message.value === '') {
+    alert('Всі поля повинні бути заповнені!');
+    return;
+  } else {
+    localStorage.clear();
+    event.currentTarget.reset();
+    console.log(user);
+  }
 }
